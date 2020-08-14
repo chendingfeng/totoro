@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/totoro.iml" filepath="$PROJECT_DIR$/totoro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/totoro-eureka/totoro-eureka.iml" filepath="$PROJECT_DIR$/totoro-eureka/totoro-eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/totoro-gateway/totoro-gateway.iml" filepath="$PROJECT_DIR$/totoro-gateway/totoro-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/totoro-security/totoro-security.iml" filepath="$PROJECT_DIR$/totoro-security/totoro-security.iml" />
+    </modules>
+  </component>
+</project>
