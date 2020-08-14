@@ -1,0 +1,66 @@
+package com.dingfeng.totoro.service.impl;
+
+
+import com.dingfeng.totoro.mapper.RightMapper;
+import com.dingfeng.totoro.model.Right;
+import com.dingfeng.totoro.service.RightService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class RightServiceImpl implements RightService {
+	@Autowired
+	protected RightMapper rightMapper;
+
+	@Override
+	public void add(Right o) {
+		rightMapper.insertSelective(o);
+	}
+
+	@Override
+	public void delete(Right o) {
+		rightMapper.deleteByPrimaryKey(o.getId());
+	}
+	
+	@Override
+	public Right findById(Long id) {
+		return rightMapper.selectByPrimaryKey(id);
+	}
+	
+	@Override
+	public List<Right> findByRoleId(Long id) {
+		return rightMapper.selectByRoleId(id);
+	}
+
+	@Override
+	public Right findByName(String name) {
+		return rightMapper.selectByName(name);
+	}
+
+	@Override
+	public List<Right> findByUsername(String userName) {
+		return rightMapper.selectByUsername(userName);
+	}
+	
+	@Override
+	public void update(Right o) {
+		rightMapper.updateByPrimaryKeySelective(o);
+	}
+
+	@Override
+	public Right findById(Object id) {
+		return rightMapper.selectByPrimaryKey((Long)id);
+	}
+
+	@Override
+	public List<Right> findByAttributes(Long pageIndex, Long pageSize) {
+		return rightMapper.selectByPage(pageIndex, pageSize);
+	}
+
+	@Override
+	public Long findMaxByAttributes() {
+		return rightMapper.selectMaxByAttributes();
+	}
+}

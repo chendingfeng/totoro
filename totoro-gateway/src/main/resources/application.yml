@@ -1,0 +1,16 @@
+server:
+  port: 8201
+spring:
+  application:
+    name: totoro-gateway
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true #使用小写service-id
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
