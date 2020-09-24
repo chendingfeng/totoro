@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
+import javax.annotation.Resource;
+
 //@Configuration
 //@EnableWebSecurity
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -26,7 +28,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 @Order(2)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+    @Resource
     private UsernameUserDetailService usernameUserDetailService;
 
     @Bean
@@ -65,8 +67,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 登录地址配置以及登录成功默认主页配置
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/home")
+//                .loginPage("/login")
+//                .defaultSuccessUrl("/home")
                 .permitAll()
                 // 登出接口权限配置
                 .and()

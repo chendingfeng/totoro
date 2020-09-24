@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingfeng.totoro.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.dingfeng.totoro.model.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="head" jdbcType="VARCHAR" property="head" />
+    <result column="enabled" jdbcType="TINYINT" property="enabled" />
+    <result column="expired" jdbcType="TINYINT" property="expired" />
+    <result column="locked" jdbcType="TINYINT" property="locked" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="reserver1" jdbcType="VARCHAR" property="reserver1" />
+    <result column="reserver2" jdbcType="VARCHAR" property="reserver2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, password, mobile, email, head, enabled, expired, locked, createTime, 
+    reserver1, reserver2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from us_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from us_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.dingfeng.totoro.model.User">
+    insert into us_user (id, username, password, 
+      mobile, email, head, 
+      enabled, expired, locked, 
+      createTime, reserver1, reserver2
+      )
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{head,jdbcType=VARCHAR}, 
+      #{enabled,jdbcType=TINYINT}, #{expired,jdbcType=TINYINT}, #{locked,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dingfeng.totoro.model.User">
+    insert into us_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="head != null">
+        head,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+      <if test="expired != null">
+        expired,
+      </if>
+      <if test="locked != null">
+        locked,
+      </if>
+      <if test="createTime != null">
+        createTime,
+      </if>
+      <if test="reserver1 != null">
+        reserver1,
+      </if>
+      <if test="reserver2 != null">
+        reserver2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="head != null">
+        #{head,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=TINYINT},
+      </if>
+      <if test="expired != null">
+        #{expired,jdbcType=TINYINT},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserver1 != null">
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dingfeng.totoro.model.User">
+    update us_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="head != null">
+        head = #{head,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=TINYINT},
+      </if>
+      <if test="expired != null">
+        expired = #{expired,jdbcType=TINYINT},
+      </if>
+      <if test="locked != null">
+        locked = #{locked,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        createTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserver1 != null">
+        reserver1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        reserver2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dingfeng.totoro.model.User">
+    update us_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      head = #{head,jdbcType=VARCHAR},
+      enabled = #{enabled,jdbcType=TINYINT},
+      expired = #{expired,jdbcType=TINYINT},
+      locked = #{locked,jdbcType=TINYINT},
+      createTime = #{createTime,jdbcType=TIMESTAMP},
+      reserver1 = #{reserver1,jdbcType=VARCHAR},
+      reserver2 = #{reserver2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

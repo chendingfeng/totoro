@@ -1,6 +1,5 @@
 package com.dingfeng.totoro.mapper;
 
-
 import com.dingfeng.totoro.model.User;
 import org.apache.ibatis.annotations.Param;
 
@@ -8,9 +7,7 @@ import java.util.List;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Long id);
-    
-    int deleteByUserName(String username);
-    
+
     int insert(User record);
 
     int insertSelective(User record);
@@ -20,46 +17,16 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
-    
-    List<User> selectAll();
-    
-    User selectByUsername(@Param("username") String username);
 
-    List<User> findByRoleId(Long roleId);
+    void deleteByUserName(@Param("userName")String userName);
 
-    int deleteByRoleId(Long roleId);
+    User selectByUserName(@Param("userName")String userName);
 
-	User selectCellphone(@Param("cellPhone") String cellPhone, @Param("userType") Long userType);
+    User selectByUserId(@Param("userId")String userId);
 
-	User selectByWeChat(@Param("weChat") String weChat, @Param("phone") String phone);
+    Long selectMaxByAttributes(@Param("userName")String userName, @Param("type")Long type, @Param("userId")String userId, @Param("enabled")Long enabled);
 
-	List<User> selectByPage(@Param("pageIndex") Long pageIndex, @Param("pageSize") Long pageSize);
-
-	Long selectMax();
-
-	List<User> selectByRoleId(@Param("roleId") Long roleId);
-
-	Long selectMaxByAttributes(@Param("username") String username,
-                               @Param("phone") String phone,
-                               @Param("userType") Long userType,
-                               @Param("relativeId") String relativeId,
-                               @Param("ignoreUser") String ignoreUser,
-                               @Param("admin") Long admin,
-                               @Param("createUser") String createUser);
-
-	List<User> selectByAttributes(@Param("username") String username,
-                                  @Param("phone") String phone,
-                                  @Param("userType") Long userType,
-                                  @Param("relativeId") String relativeId,
-                                  @Param("ignoreUser") String ignoreUser,
-                                  @Param("admin") Long admin,
-                                  @Param("createUser") String createUser,
-                                  @Param("orderProp") String orderProp, @Param("order") String order,
-                                  @Param("pageIndex") Long pageIndex, @Param("pageSize") Long pageSize);
-
-	void deleteByRelativeId(@Param("relativeId") String relativeId);
-
-	User selectByOpenId(@Param("userType") Long userType, @Param("openId") String openId, @Param("openIdType") Long openIdType);
-
-	void deleteByCellphoneAndType(@Param("phone") String phone, @Param("userType") Long userType);
+    List<User> selectByAttributes(@Param("userName")String userName,  @Param("userId")String userId,
+                                  @Param("enabled")Long enabled, @Param("pageIndex")Long pageIndex, @Param("pageSize")Long pageSize,
+                                  @Param("orderProp")String orderProp, @Param("order")String order);
 }

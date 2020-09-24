@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS us_right_item (
  	id int NOT NULL AUTO_INCREMENT,				/*     角色标识		    				*/
 	rightId int NOT NULL,						/*     权限标识		    				*/
 	urlId int NOT NULL,							/*     接口标识		    				*/
-  	reserver1 varchar(64) default NULL,			/*     保留字段		    				*/
+  reserver1 varchar(64) default NULL,			/*     保留字段		    				*/
 	reserver2 varchar(64) default NULL,			/*     保留字段		    				*/
 	primary key(id),
 	foreign key(rightId) references us_right(id),
@@ -163,13 +163,10 @@ CREATE TABLE IF NOT EXISTS us_right_item (
 -- 创建角色表
 --
 CREATE TABLE IF NOT EXISTS us_role (
-  	id bigint(20) NOT NULL AUTO_INCREMENT,		/*     角色标识		    				*/
-  	name varchar(64) DEFAULT '',				/*     角色名称		    				*/
+  id bigint(20) NOT NULL AUTO_INCREMENT,		/*     角色标识		    				*/
+  name varchar(64) DEFAULT '',				/*     角色名称		    				*/
  	description varchar(255) DEFAULT '',		/*     角色描述		    				*/
- 	userType tinyint DEFAULT 1,				    /*     1：运营商,2学校,3机构,4教师,5家长	*/
- 	relativeId varchar(20) DEFAULT '',			/*     关联学校或机构id	    			*/
- 	createUser varchar(32) DEFAULT '',			/*     创建用户名			     	    */
-  	reserver1 varchar(64) default NULL,			/*     保留字段		    				*/
+  reserver1 varchar(64) default NULL,			/*     保留字段		    				*/  
 	reserver2 varchar(64) default NULL,			/*     保留字段		    				*/
 	primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='system role';
@@ -193,21 +190,17 @@ CREATE TABLE IF NOT EXISTS us_role_right (
 --
 CREATE TABLE IF NOT EXISTS us_user (                                          
   	id bigint(20) NOT NULL AUTO_INCREMENT,		/*     表标识			     	        */
-  	username varchar(32) DEFAULT '',			/*     用户名			     	        */
-  	password varchar(255) DEFAULT '',			/*     密码			         			*/            
-  	mobile varchar(16) DEFAULT '',				/*     手机			         			*/            
-  	email varchar(32) DEFAULT '',				/*     电子邮件		         			*/            
-  	userType tinyint DEFAULT 1,				    /*     1：运营商,2学校,3机构,4教师,5家长	*/
-  	relativeId varchar(20) DEFAULT '',			/*     关联学校或机构id	    			*/
-  	head varchar(256) DEFAULT '',				/*     用户头像	    					*/
-  	admin tinyint DEFAULT 0,				    /*     是否超级管理员					*/
-  	enabled tinyint DEFAULT 1,				    /*     可用性							*/
-  	expired tinyint DEFAULT 0,					/*	        是否过期					*/
-  	locked tinyint DEFAULT 0,					/*	        是否锁定					*/
-  	createUser varchar(32) DEFAULT '',			/*     创建用户名			     	    */
-  	createTime datetime default now(),			/*     创建时间		        			*/
-  	reserver1 varchar(64) default NULL,			/*     保留字段		    				*/
-	reserver2 varchar(64) default NULL,			/*     保留字段		    				*/
+  	username varchar(32) DEFAULT NULL COMMENT '用户名',			/*     用户名			     	        */
+  	password varchar(255) DEFAULT NULL COMMENT '密码',			/*     密码			         			*/
+  	mobile varchar(16) DEFAULT NULL COMMENT '手机',				/*     手机			         			*/
+  	email varchar(32) DEFAULT NULL COMMENT '电子邮件',				/*     电子邮件		         			*/
+  	head varchar(256) DEFAULT NULL COMMENT '用户头像',				/*     用户头像	    					*/
+  	enabled tinyint DEFAULT 1 COMMENT '可用性',				    /*     可用性							*/
+    expired tinyint DEFAULT 0 COMMENT '是否过期',          /*          是否过期          */
+    locked tinyint DEFAULT 0 COMMENT '是否锁定',         /*          是否锁定          */
+  	createTime datetime DEFAULT now() COMMENT '创建时间',			/*     创建时间		        			*/
+  	reserver1 varchar(64) DEFAULT NULL COMMENT '保留字段1',			/*     保留字段		    				*/
+	reserver2 varchar(64) DEFAULT NULL COMMENT '保留字段2',			/*     保留字段		    				*/
 	primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='system user';
 
@@ -218,8 +211,8 @@ CREATE TABLE IF NOT EXISTS us_user_role (
   	id bigint(20) NOT NULL AUTO_INCREMENT,		/*     表标识							*/
   	userId bigint(20) NOT NULL,					/*     用户标识		    				*/
   	roleId bigint(20) NOT NULL,					/*     角色标识		    				*/
-  	reserver1 varchar(64) default NULL,			/*     保留字段		    				*/
-	reserver2 varchar(64) default NULL,			/*     保留字段		    				*/
+  	reserver1 varchar(64) DEFAULT NULL,			/*     保留字段		    				*/
+	reserver2 varchar(64) DEFAULT NULL,			/*     保留字段		    				*/
 	primary key(id),
 	foreign key(userId) references us_user(id),
 	foreign key(roleId) references us_role(id)

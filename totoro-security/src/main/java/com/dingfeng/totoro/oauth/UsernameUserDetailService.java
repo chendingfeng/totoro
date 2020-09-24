@@ -1,8 +1,9 @@
 package com.dingfeng.totoro.oauth;
 
 import com.dingfeng.totoro.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * 通过用户名查询用户信息
@@ -10,11 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsernameUserDetailService extends BaseUserDetailService {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     @Override
     protected com.dingfeng.totoro.model.User getUser(String userName) {
-        return userService.findByUsername(userName);
+        return userService.findByUserName(userName);
     }
 }

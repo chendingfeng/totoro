@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/totoro.iml" filepath="$PROJECT_DIR$/totoro.iml" />
       <module fileurl="file://$PROJECT_DIR$/totoro-eureka/totoro-eureka.iml" filepath="$PROJECT_DIR$/totoro-eureka/totoro-eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/totoro-gateway/totoro-gateway.iml" filepath="$PROJECT_DIR$/totoro-gateway/totoro-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/totoro-mbg/totoro-mbg.iml" filepath="$PROJECT_DIR$/totoro-mbg/totoro-mbg.iml" />
       <module fileurl="file://$PROJECT_DIR$/totoro-security/totoro-security.iml" filepath="$PROJECT_DIR$/totoro-security/totoro-security.iml" />
     </modules>
   </component>

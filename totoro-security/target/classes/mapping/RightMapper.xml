@@ -14,23 +14,23 @@
     id, name, description, reserver1, reserver2
   </sql>
   <sql id="Alias_Column_List" >
-    ${alias}.name, 
-    ${alias}.description, 
+    ${alias}.name,
+    ${alias}.description,
     ${alias}.reserver1, ${alias}.reserver2
   </sql>
   <!-- 通过主键检索 -->
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from us_right
     where id = #{id,jdbcType=INTEGER}
   </select>
-   <select id="selectMaxByAttributes" resultType="long">
+  <select id="selectMaxByAttributes" resultType="long">
   	select count(1) from t_right
-  </select>	
+  </select>
   <!-- 分页获取所有权限 -->
   <select id="selectByPage" resultMap="BaseResultMap">
-  	select 
+    select
     <include refid="Base_Column_List" />
     from us_right
     order by id desc
@@ -38,28 +38,28 @@
   </select>
   <!-- 通过权限名获取权限 -->
   <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
-  	select 
+    select
     <include refid="Base_Column_List" />
     from us_right
     where name = #{name,jdbcType=VARCHAR}
   </select>
   <!-- 获取用户所有权限列表 -->
   <select id="selectByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
-  	select distinct(rt.id), <include refid="Alias_Column_List" ><property name="alias" value="rt"/></include>
-  	from us_right rt
-  	join us_role_right rr on rt.id=rr.rightId
-  	join us_role r on rr.roleId=r.id
-  	join us_user_role ur on ur.roleId=r.id
-  	join us_user u on u.id=ur.userId
-	where u.username=#{userName,jdbcType=VARCHAR}
+    select distinct(rt.id), <include refid="Alias_Column_List" ><property name="alias" value="rt"/></include>
+    from us_right rt
+    join us_role_right rr on rt.id=rr.rightId
+    join us_role r on rr.roleId=r.id
+    join us_user_role ur on ur.roleId=r.id
+    join us_user u on u.id=ur.userId
+    where u.username=#{userName,jdbcType=VARCHAR}
   </select>
   <!-- 获取角色所有权限列表 -->
   <select id="selectByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
-  	select distinct(rt.id), <include refid="Alias_Column_List" ><property name="alias" value="rt"/></include>
-  	from us_right rt
-  	join us_role_right rr on rt.id=rr.rightId
-  	join us_role r on rr.roleId=r.id
-	where r.id=#{roleId,jdbcType=INTEGER}
+    select distinct(rt.id), <include refid="Alias_Column_List" ><property name="alias" value="rt"/></include>
+    from us_right rt
+    join us_role_right rr on rt.id=rr.rightId
+    join us_role r on rr.roleId=r.id
+    where r.id=#{roleId,jdbcType=INTEGER}
   </select>
   <!-- 通过主键删除记录 -->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
@@ -74,7 +74,7 @@
   <!-- 插入记录 -->
   <insert id="insert" parameterType="com.dingfeng.totoro.model.Right">
     insert into us_right (id, name, description, reserver1, reserver2)
-    values (#{id,jdbcType=INTEGER},  #{name,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER},  #{name,jdbcType=VARCHAR},
     		#{description,jdbcType=VARCHAR},
       		#{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR})
   </insert>
@@ -138,7 +138,7 @@
   <!-- 通过主键更新所有列 -->
   <update id="updateByPrimaryKey" parameterType="com.dingfeng.totoro.model.Right" >
     update us_right
-    set 
+    set
     name = #{name,jdbcType=VARCHAR},
     description = #{description,jdbcType=VARCHAR},
     reserver1 = #{reserver1,jdbcType=VARCHAR},
