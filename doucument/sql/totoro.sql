@@ -1,11 +1,21 @@
+/**
+1. totoro 数据库命名规则
+库名： totoro
+表名： 模块简写_表名（eq：um(userModule)_user -> um_user）
 
+2. 模块说明
+oauth_*         ---- 授权中心相关表
+um_*            ---- 用户管理相关表
+pm_*            ---- 商品管理相关表
+
+ */
 
 -- ------------------------------------------------------
 -- 创建并使用数据库
 -- ------------------------------------------------------
 set charset utf8;
-create database if not exists totoro_user_sys character set UTF8;
-use totoro_user_sys;
+create database if not exists totoro character set UTF8;
+use totoro;
 
 -- ------------------------------------------------------
 -- 创建授权认证中心表
@@ -17,32 +27,32 @@ use totoro_user_sys;
 
 CREATE TABLE IF NOT EXISTS `oauth_client_details` (
   `client_id` varchar(48) NOT NULL,						/* 主键,必须唯一,不能为空. 用于唯一标识每一个客户端(client); 在注册时必须填写(也可由服务端自动生成). 对于不同的grant_type,该字段都是必须的. 在实际应用中的另一个名称叫appKey,与client_id是同一个概念		*/
-  `resource_ids` varchar(256) DEFAULT NULL,				/* 客户端所能访问的资源id集合,多个资源时用逗号(,)分隔,如: “unity-resource,mobile-resource”. 该字段的值必须来源于与security.xml中标签‹oauth2:resource-server的属性resource-id值一致. 
+  `resource_ids` varchar(256) DEFAULT NULL,				/* 客户端所能访问的资源id集合,多个资源时用逗号(,)分隔,如: “unity-resource,mobile-resource”. 该字段的值必须来源于与security.xml中标签‹oauth2:resource-server的属性resource-id值一致.
   														       在security.xml配置有几个‹oauth2:resource-server标签, 则该字段可以使用几个该值. 在实际应用中, 我们一般将资源进行分类,并分别配置对应的‹oauth2:resource-server,如订单资源配置一个
   														   ‹oauth2:resource-server, 用户资源又配置一个‹oauth2:resource-server. 当注册客户端时,根据实际需要可选择资源id,也可根据不同的注册流程,赋予对应的资源id.	*/
   `client_secret` varchar(256) DEFAULT NULL,			/* 用于指定客户端(client)的访问密匙; 在注册时必须填写(也可由服务端自动生成). 对于不同的grant_type,该字段都是必须的. 在实际应用中的另一个名称叫appSecret,与client_secret是同一个概念.	*/
   `scope` varchar(256) DEFAULT NULL,					/* 指定客户端申请的权限范围,可选值包括read,write,trust;若有多个权限范围用逗号(,)分隔,如: “read,write”. scope的值与security.xml中配置的‹intercept-url的access属性有关系. 如‹intercept-url
-  														       的配置为‹intercept-url pattern="/m / **" access=“ROLE_MOBILE,SCOPE_READ”/>则说明访问该URL时的客户端必须有read权限范围. write的配置值为SCOPE_WRITE, trust的配置值为SCOPE_TRUST. 
+  														       的配置为‹intercept-url pattern="/m / **" access=“ROLE_MOBILE,SCOPE_READ”/>则说明访问该URL时的客户端必须有read权限范围. write的配置值为SCOPE_WRITE, trust的配置值为SCOPE_TRUST.
   														       在实际应该中, 该值一般由服务端指定, 常用的值为read,write.	*/
-  `authorized_grant_types` varchar(256) DEFAULT NULL,	/* 指定客户端支持的grant_type,可选值包括authorization_code,password,refresh_token,implicit,client_credentials, 若支持多个grant_type用逗号(,)分隔,如: “authorization_code,password”. 
-  														       在实际应用中,当注册时,该字段是一般由服务器端指定的,而不是由申请者去选择的,最常用的grant_type组合有: “authorization_code,refresh_token”(针对通过浏览器访问的客户端); 
+  `authorized_grant_types` varchar(256) DEFAULT NULL,	/* 指定客户端支持的grant_type,可选值包括authorization_code,password,refresh_token,implicit,client_credentials, 若支持多个grant_type用逗号(,)分隔,如: “authorization_code,password”.
+  														       在实际应用中,当注册时,该字段是一般由服务器端指定的,而不是由申请者去选择的,最常用的grant_type组合有: “authorization_code,refresh_token”(针对通过浏览器访问的客户端);
   														   “password,refresh_token”(针对移动设备的客户端). implicit与client_credentials在实际中很少使用		*/
-  `web_server_redirect_uri` varchar(256) DEFAULT NULL,	/* 客户端的重定向URI,可为空, 当grant_type为authorization_code或implicit时, 在Oauth的流程中会使用并检查与注册时填写的redirect_uri是否一致. 下面分别说明:当grant_type=authorization_code时, 
+  `web_server_redirect_uri` varchar(256) DEFAULT NULL,	/* 客户端的重定向URI,可为空, 当grant_type为authorization_code或implicit时, 在Oauth的流程中会使用并检查与注册时填写的redirect_uri是否一致. 下面分别说明:当grant_type=authorization_code时,
   														       第一步 从 spring-oauth-server获取 'code’时客户端发起请求时必须有redirect_uri参数, 该参数的值必须与 web_server_redirect_uri的值一致. 第二步 用 ‘code’ 换取 ‘access_token’ 时客户也必须传递相同
   														       的redirect_uri. 在实际应用中, web_server_redirect_uri在注册时是必须填写的, 一般用来处理服务器返回的code, 验证state是否合法与通过code去换取access_token值.在spring-oauth-client项目中, 可
   														       具体参考AuthorizationCodeController.java中的authorizationCodeCallback方法.当grant_type=implicit时通过redirect_uri的hash值来传递access_token值.
   														       如:http://localhost:7777/spring-oauth-client/implicit#access_token=dc891f4a-ac88-4ba6-8224-a2497e013865&token_type=bearer&expires_in=43199然后客户端通过JS等从hash值中取到access_token值. 	*/
   `authorities` varchar(256) DEFAULT NULL,				/* 指定客户端所拥有的Spring Security的权限值,可选, 若有多个权限值,用逗号(,)分隔, 如: "ROLE_			*/
-  `access_token_validity` int(11) DEFAULT NULL,			/* 设定客户端的access_token的有效时间值(单位:秒),可选, 若不设定值则使用默认的有效时间值(60 * 60 * 12, 12小时). 在服务端获取的access_token JSON数据中的expires_in字段的值即为当前access_token的有效时间值. 
+  `access_token_validity` int(11) DEFAULT NULL,			/* 设定客户端的access_token的有效时间值(单位:秒),可选, 若不设定值则使用默认的有效时间值(60 * 60 * 12, 12小时). 在服务端获取的access_token JSON数据中的expires_in字段的值即为当前access_token的有效时间值.
   														       在项目中, 可具体参考DefaultTokenServices.java中属性accessTokenValiditySeconds. 在实际应用中, 该值一般是由服务端处理的, 不需要客户端自定义.refresh_token_validity	设定客户端的refresh_token的有效
   														       时间值(单位:秒),可选, 若不设定值则使用默认的有效时间值(60 * 60 * 24 * 30, 30天). 若客户端的grant_type不包括refresh_token,则不用关心该字段 在项目中, 可具体参考DefaultTokenServices.java中属性
   														   refreshTokenValiditySeconds. 在实际应用中, 该值一般是由服务端处理的, 不需要客户端自定义	*/
   `refresh_token_validity` int(11) DEFAULT NULL,		/* 设定客户端的refresh_token的有效时间值(单位:秒),可选, 若不设定值则使用默认的有效时间值(60 * 60 * 24 * 30, 30天). 若客户端的grant_type不包括refresh_token,则不用关心该字段 在项目中, 可具体参考
   														   DefaultTokenServices.java中属性refreshTokenValiditySeconds. 在实际应用中, 该值一般是由服务端处理的, 不需要客户端自定义		*/
-  `additional_information` varchar(4096) DEFAULT NULL,	/* 这是一个预留的字段,在Oauth的流程中没有实际的使用,可选,但若设置值,必须是JSON格式的数据,如:{“country”:“CN”,“country_code”:“086”}按照spring-security-oauth项目中对该字段的描述 Additional information 
+  `additional_information` varchar(4096) DEFAULT NULL,	/* 这是一个预留的字段,在Oauth的流程中没有实际的使用,可选,但若设置值,必须是JSON格式的数据,如:{“country”:“CN”,“country_code”:“086”}按照spring-security-oauth项目中对该字段的描述 Additional information
   														   for this client, not need by the vanilla OAuth protocol but might be useful, for example,for storing descriptive information. (详见ClientDetails.java的getAdditionalInformation()方法的注释)
   														       在实际应用中, 可以用该字段来存储关于客户端的一些其他信息,如客户端的国家,地区,注册时的IP地址等等.create_time	数据的创建时间,精确到秒,由数据库在插入数据时取当前系统时间自动生成(扩展字段)	*/
-  `autoapprove` varchar(256) DEFAULT NULL,				/* 设置用户是否自动Approval操作, 默认值为 ‘false’, 可选值包括 ‘true’,‘false’, ‘read’,‘write’. 该字段只适用于grant_type="authorization_code"的情况,当用户登录成功后,若该值为’true’或支持的scope值,则会跳过用户Approve的页面, 
+  `autoapprove` varchar(256) DEFAULT NULL,				/* 设置用户是否自动Approval操作, 默认值为 ‘false’, 可选值包括 ‘true’,‘false’, ‘read’,‘write’. 该字段只适用于grant_type="authorization_code"的情况,当用户登录成功后,若该值为’true’或支持的scope值,则会跳过用户Approve的页面,
   														       直接授权. 该字段与 trusted 有类似的功能, 是 spring-security-oauth2 的 2.0 版本后添加的新属性. 在项目中,主要操作oauth_client_details表的类是JdbcClientDetailsService.java, 更多的细节请参考该类. 也可以根据实际的需要,
   														       去扩展或修改该类的实现.	*/
   PRIMARY KEY (`client_id`)
@@ -122,10 +132,14 @@ INSERT INTO `oauth_client_details` VALUES ('my_client_id','gate_way_server','$2a
 UNLOCK TABLES;
 
 
+
+-- ------------------------------------------------------
+-- 创建用户管理表
+-- ------------------------------------------------------
 --
 -- 权限表
 --
-CREATE TABLE IF NOT EXISTS us_right (
+CREATE TABLE IF NOT EXISTS um_right (
  	id int NOT NULL,							/*     权限标识		    				*/
   	name varchar(255) DEFAULT '',				/*     权限名称		    				*/
   	description varchar(64) DEFAULT '',			/*     权限描述		    				*/
@@ -137,7 +151,7 @@ CREATE TABLE IF NOT EXISTS us_right (
 --
 -- 系统接口地址表
 --
-CREATE TABLE IF NOT EXISTS us_url (
+CREATE TABLE IF NOT EXISTS um_url (
  	id int NOT NULL,							/*     权限明细标识		    			*/
   	url varchar(256) DEFAULT '',				/*     接口地址	    					*/
   	description varchar(64) DEFAULT '',			/*     接口描述		    				*/
@@ -150,7 +164,7 @@ CREATE TABLE IF NOT EXISTS us_url (
 --
 -- 权限接口表
 --
-CREATE TABLE IF NOT EXISTS us_right_item (
+CREATE TABLE IF NOT EXISTS um_right_item (
  	id int NOT NULL AUTO_INCREMENT,				/*     角色标识		    				*/
 	rightId int NOT NULL,						/*     权限标识		    				*/
 	urlId int NOT NULL,							/*     接口标识		    				*/
@@ -164,11 +178,11 @@ CREATE TABLE IF NOT EXISTS us_right_item (
 --
 -- 创建角色表
 --
-CREATE TABLE IF NOT EXISTS us_role (
+CREATE TABLE IF NOT EXISTS um_role (
   id bigint(20) NOT NULL AUTO_INCREMENT,		/*     角色标识		    				*/
   name varchar(64) DEFAULT '',				/*     角色名称		    				*/
  	description varchar(255) DEFAULT '',		/*     角色描述		    				*/
-  reserver1 varchar(64) default NULL,			/*     保留字段		    				*/  
+  reserver1 varchar(64) default NULL,			/*     保留字段		    				*/
 	reserver2 varchar(64) default NULL,			/*     保留字段		    				*/
 	primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='system role';
@@ -176,7 +190,7 @@ CREATE TABLE IF NOT EXISTS us_role (
 --
 -- 创建角色权限表
 --
-CREATE TABLE IF NOT EXISTS us_role_right (
+CREATE TABLE IF NOT EXISTS um_role_right (
   	id bigint(20) NOT NULL AUTO_INCREMENT,		/*     表标识							*/
   	roleId bigint(20) NOT NULL,					/*     角色标识		    				*/
   	rightId int DEFAULT NULL,					/*     权限标识		    				*/
@@ -190,7 +204,7 @@ CREATE TABLE IF NOT EXISTS us_role_right (
 --
 -- 创建用户表
 --
-CREATE TABLE IF NOT EXISTS us_user (                                          
+CREATE TABLE IF NOT EXISTS um_user (
   	id bigint(20) NOT NULL AUTO_INCREMENT,		/*     表标识			     	        */
   	username varchar(32) DEFAULT NULL COMMENT '用户名',			/*     用户名			     	        */
   	password varchar(255) DEFAULT NULL COMMENT '密码',			/*     密码			         			*/
@@ -209,7 +223,7 @@ CREATE TABLE IF NOT EXISTS us_user (
 --
 -- 创建用户角色表
 --
-CREATE TABLE IF NOT EXISTS us_user_role (
+CREATE TABLE IF NOT EXISTS um_user_role (
   	id bigint(20) NOT NULL AUTO_INCREMENT,		/*     表标识							*/
   	userId bigint(20) NOT NULL,					/*     用户标识		    				*/
   	roleId bigint(20) NOT NULL,					/*     角色标识		    				*/
@@ -223,7 +237,7 @@ CREATE TABLE IF NOT EXISTS us_user_role (
 --
 -- 创建用户组表
 --
-CREATE TABLE IF NOT EXISTS us_usergroup (
+CREATE TABLE IF NOT EXISTS um_usergroup (
  	id bigint(20) NOT NULL AUTO_INCREMENT,				/*     用户组标识		    				*/
   	name varchar(255) DEFAULT '',				/*     用户组名称		    				*/
   	description varchar(64) DEFAULT '',			/*     用户组描述		    				*/
@@ -235,7 +249,7 @@ CREATE TABLE IF NOT EXISTS us_usergroup (
 --
 -- 用户组与用户信息关联表
 --
-CREATE TABLE IF NOT EXISTS us_user_usergroup (
+CREATE TABLE IF NOT EXISTS um_user_usergroup (
   	id bigint(20) NOT NULL AUTO_INCREMENT,		/*     表标识							*/
   	userId bigint(20) NOT NULL,					/*     用户标识		    				*/
   	usergroupId bigint(20) NOT NULL,			/*     用户组标识		    				*/
@@ -249,7 +263,7 @@ CREATE TABLE IF NOT EXISTS us_user_usergroup (
 --
 -- 用户组与角色关联表
 --
-CREATE TABLE IF NOT EXISTS us_role_usergroup (
+CREATE TABLE IF NOT EXISTS um_role_usergroup (
   	id bigint(20) NOT NULL AUTO_INCREMENT,		/*     表标识							*/
   	roleId bigint(20) NOT NULL,					/*     角色标识		    				*/
   	usergroupId bigint(20) NOT NULL,			/*     用户组标识		    				*/
@@ -259,3 +273,65 @@ CREATE TABLE IF NOT EXISTS us_role_usergroup (
 	foreign key(roleId) references us_role(id),
 	foreign key(usergroupId) references us_usergroup(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='role usergroup';
+
+
+-- ------------------------------------------------------
+-- 创建商品管理表
+-- ------------------------------------------------------
+
+--
+-- 创建商品分类表
+--
+
+CREATE TABLE IF NOT EXISTS `pm_product_category` (
+	id                   bigint NOT NULL auto_increment,
+	parent_id            bigint comment '上级分类的编号：0表示一级分类',
+	name                 varchar(64) comment '名称',
+	level                int(1) comment '分类级别：0->1级；1->2级',
+	product_count        int comment '商品数量',
+	product_unit         varchar(64) comment '商品单位',
+	nav_status           int(1) comment '是否显示在导航栏：0->不显示；1->显示',
+	show_status          int(1) comment '显示状态：0->不显示；1->显示',
+	sort                 int comment '排序',
+	icon                 varchar(255) comment '图标',
+	keywords             varchar(255) comment '关键字',
+	description          text comment '描述',
+	primary key (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 创建商品品牌表
+--
+CREATE TABLE IF NOT EXISTS `pm_product_brand` (
+   id                   bigint NOT NULL auto_increment,
+   name                 varchar(64) comment '名称',
+   first_letter         varchar(8) comment '首字母',
+   sort                 int comment '排序',
+   factory_status       int(1) comment '是否为品牌制造商：0->不是；1->是',
+   show_status          int(1) comment '是否显示',
+   product_count        int comment '产品数量',
+   product_comment_count int comment '产品评论数量',
+   logo                 varchar(255) comment '品牌logo',
+   big_pic              varchar(255) comment '专区大图',
+   brand_story          text comment '品牌故事',
+   primary key (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 商品表
+--
+CREATE TABLE IF NOT EXISTS `pm_product` (
+    id                      bigint NOT NULL auto_increment,
+    name                    varchar(100) comment '商品名称',
+    cateid                  varchar(64) DEFAULT NULL comment '类别Id',
+    subtitle                varchar(200) DEFAULT NULL comment '商品副标题',
+    mainimage               varchar(500) DEFAULT NULL comment '产品主图,url相对地址',
+    subimages               text comment '图片地址,json格式',
+    detail text             comment '商品详情',
+    price                   decimal(20,2) NOT NULL comment '价格,单位-元保留两位小数',
+    stock                   int(11) NOT NULL comment '库存数量',
+    status                  int(6) DEFAULT '1' comment '商品状态.1-在售 2-下架 3-删除',
+    createtime datetime     DEFAULT NULL comment '创建时间',
+    updatetime datetime     DEFAULT NULL comment '更新时间',
+    primary key (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

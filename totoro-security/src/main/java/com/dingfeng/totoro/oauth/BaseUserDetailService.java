@@ -31,7 +31,7 @@ public abstract class BaseUserDetailService implements UserDetailsService {
         
         // 设置用户权限
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
-        List<Right> rights = rightService.findByUsername(user.getUsername()); 
+        List<Right> rights = rightService.findByUsername(user.getUsername());
         for(Right right : rights) {
     		GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + right.getDescription());
             grantedAuthorities.add(authority);

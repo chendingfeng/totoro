@@ -1,3 +1,4 @@
+import com.dingfeng.totoro.TotoroSecurityApplication;
 import com.dingfeng.totoro.model.Right;
 import com.dingfeng.totoro.service.RightService;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = TotoroSecurityApplication.class)
 public class TestGetRight {
 
     @Resource
@@ -17,7 +18,8 @@ public class TestGetRight {
 
     @Test
     public void test(){
-        List<Right> test = rightService.findByUsername("admin");
+        List<Right> result = rightService.findByUsername("admin");
+        System.err.println(result);
     }
 
 

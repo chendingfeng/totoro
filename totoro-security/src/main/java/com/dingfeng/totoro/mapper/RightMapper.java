@@ -58,7 +58,7 @@ public interface RightMapper {
      * @param username：用户名
      * @return
      */
-    int deleteByUserName(@Param("username") String username);
+    int deleteByUsername(@Param("username") String username);
 
     /**
      * 根据权限名删除权限信息

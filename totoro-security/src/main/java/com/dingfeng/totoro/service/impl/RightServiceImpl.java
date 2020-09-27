@@ -1,9 +1,11 @@
 package com.dingfeng.totoro.service.impl;
 
+import com.dingfeng.totoro.mapper.RightMapper;
 import com.dingfeng.totoro.model.Right;
 import com.dingfeng.totoro.service.RightService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,6 +18,10 @@ import java.util.List;
  */
 @Service
 public class RightServiceImpl implements RightService {
+
+    @Resource
+    private RightMapper rightMapper;
+
     @Override
     public Right findByName(String name) {
         return null;
@@ -48,7 +54,7 @@ public class RightServiceImpl implements RightService {
 
     @Override
     public List<Right> findByUsername(String userName) {
-        return null;
+        return rightMapper.selectByUsername(userName);
     }
 
     @Override
